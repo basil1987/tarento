@@ -1,0 +1,25 @@
+- hosts: appserver
+  remote_user: ubuntu
+  become_method: sudo
+  become_user: root
+  become: yes
+
+  tasks:
+    - name: Make sure that JDK is installed
+      apt:
+        name: openjdk-11-jdk
+        update_cache: true
+        state: latest
+    - name: Make sure that JAR file is copied
+      copy:
+        src: /home/ubuntu/microserviceapp/demo-backend1/target/sentiment-analysis-web-0.0.2-SNAPSHOT.jar
+        dest: /usr/local/sentiment-analysis-web-0.0.2-SNAPSHOT.jar
+    - name: Make sure that java app restart script is copied to the remote app server
+      copy:
+        src: deploy_java.sh
+        dest: /usr/local/deploy_java.sh
+        mode: '755'
+    - name: make sure that JAVA App is running
+      shell:
+        chdir: /usr/local/
+        cmd: ./deploy_java.sh
