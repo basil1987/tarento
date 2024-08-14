@@ -1,0 +1,21 @@
+- hosts: webservers
+  remote_user: ubuntu
+  become_user: root
+  become_method: sudo
+  become: yes
+
+  tasks:
+    - name: Make sure that Nginx is installed
+      apt:
+        name: nginx
+        state: present
+        update_cache: true
+    - name: Make sure that Nginx is running
+      service:
+        name: nginx
+        state: started
+        enabled: true
+    - name: Make sure that /var/www/html has latest build folder
+      copy:
+        src: /home/ubuntu/microserviceapp/demo-frontend/build/
+        dest: /var/www/html/
