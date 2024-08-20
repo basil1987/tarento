@@ -1,3 +1,16 @@
 [webservers]
-172.31.2.240
-172.31.10.59
+172.31.2.240 nginx_version=1.23.*
+172.31.10.59 nginx_version=1.24.0-2ubuntu7
+
+[appserver]
+172.31.11.15
+
+[dbservers]
+10.10.12.13
+
+[webservers:vars]
+nginx_package=nginx
+nginx_service=nginx
+install_state=present
+service_status=started
+nginx_version=1.24.0-2ubuntu7
