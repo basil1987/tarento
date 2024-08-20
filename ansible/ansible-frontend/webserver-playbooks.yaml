@@ -4,18 +4,25 @@
   become_method: sudo
   become: yes
 
+  vars:
+    nginx_package: nginx
+    nginx_service: nginx
+    install_state: present
+    service_status: started
+    webroot: /var/www/html
+    nginx_version: 1.24.0-2ubuntu7
   tasks:
     - name: Make sure that Nginx is installed
       apt:
-        name: nginx
-        state: present
+        name: "{{ nginx_package }}={{ nginx_version }}"
+        state: "{{ install_state }}"
         update_cache: true
     - name: Make sure that Nginx is running
       service:
-        name: nginx
-        state: started
+        name: "{{ nginx_service }}"
+        state: "{{ service_status }}"
         enabled: true
     - name: Make sure that /var/www/html has latest build folder
       copy:
         src: /home/ubuntu/microserviceapp/demo-frontend/build/
-        dest: /var/www/html/
+        dest: "{{ webroot }}/"
